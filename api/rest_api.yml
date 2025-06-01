@@ -1,0 +1,461 @@
+---
+openapi: 3.0.1
+info:
+  title: My API
+  version: v1
+paths:
+  "/api/v1/{publicationId}/comments/add":
+    post:
+      tags:
+        - Comment
+      summary: Добавление комментария
+      parameters:
+        - name: publicationId
+          in: path
+          description: Id публикации
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: Комментарий
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Comment"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/Comment"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/Comment"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/Comment"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Comment"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/Comment"
+  "/api/v1/{publicationId}/comments":
+    post:
+      tags:
+        - Comment
+      summary: Постраничное получение комментариев
+      parameters:
+        - name: publicationId
+          in: path
+          description: Id публикации
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: Настройки запрашиваемой страницы
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CommentPagingResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CommentPagingResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CommentPagingResult"
+  "/api/v1/feed":
+    post:
+      tags:
+        - Feed
+      summary: Получение общей ленты
+      requestBody:
+        description: Настройки запрашиваемой страницы
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+  "/api/v1/feed/subscriptions":
+    post:
+      tags:
+        - Feed
+      summary: Получение ленты подписок
+      requestBody:
+        description: Настройки запрашиваемой страницы
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/PageInfo"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+  "/api/v1/images/{publicationId}/image":
+    post:
+      tags:
+        - File
+      summary: Загрузить изображение в форму редактирования публикации
+      parameters:
+        - name: publicationId
+          in: path
+          description: Id публикации
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: Изображение в виде массива байт
+        content:
+          application/json:
+            schema:
+              type: string
+              format: byte
+          text/json:
+            schema:
+              type: string
+              format: byte
+          application/*+json:
+            schema:
+              type: string
+              format: byte
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+  "/api/v1/images/{publicationId}":
+    get:
+      tags:
+        - File
+      summary: Получить изображения публикации
+      parameters:
+        - name: publicationId
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/FeedFile"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FeedFile"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/FeedFile"
+  "/api/v1/images":
+    get:
+      tags:
+        - File
+      summary: Получить изображения публикаций для ленты
+      parameters:
+        - name: publicationIds
+          in: query
+          description: ''
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FeedFile"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FeedFile"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FeedFile"
+  "/api/v1/publication":
+    post:
+      tags:
+        - Publication
+      summary: Добавить публикацию
+      requestBody:
+        description: Публикация
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Publication"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/Publication"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/Publication"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: uri
+            application/json:
+              schema:
+                type: string
+                format: uri
+            text/json:
+              schema:
+                type: string
+                format: uri
+  "/api/v1/publication/{publicationId}":
+    get:
+      tags:
+        - Publication
+      summary: Получить публикацию по Id
+      parameters:
+        - name: publicationId
+          in: path
+          description: Id публикации
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/Publication"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Publication"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/Publication"
+  "/api/v1/search/publications":
+    post:
+      tags:
+        - PublicationSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SearchOptions"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SearchOptions"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SearchOptions"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResult"
+components:
+  schemas:
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Бла бла
+          nullable: true
+        text:
+          type: string
+          nullable: true
+        authorName:
+          type: string
+          nullable: true
+        date:
+          type: string
+          format: date-time
+      additionalProperties: false
+    CommentPagingResult:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          format: int32
+          nullable: true
+        nextPage:
+          type: integer
+          format: int32
+          nullable: true
+        totalItems:
+          type: integer
+          format: int32
+          nullable: true
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Comment"
+          nullable: true
+      additionalProperties: false
+    Coordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      additionalProperties: false
+    FeedFile:
+      type: object
+      properties:
+        publicationId:
+          type: string
+          nullable: true
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+          nullable: true
+      additionalProperties: false
+    PageInfo:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+          nullable: true
+        pageSize:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    Publication:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        publishDate:
+          type: string
+          format: date-time
+        fileIds:
+          type: array
+          items:
+            type: string
+          nullable: true
+        coordinates:
+          "$ref": "#/components/schemas/Coordinates"
+      additionalProperties: false
+    PublicationPagingResult:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          format: int32
+          nullable: true
+        nextPage:
+          type: integer
+          format: int32
+          nullable: true
+        totalItems:
+          type: integer
+          format: int32
+          nullable: true
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Publication"
+          nullable: true
+      additionalProperties: false
+    SearchOptions:
+      type: object
+      properties:
+        pageInfo:
+          "$ref": "#/components/schemas/PageInfo"
+        searchText:
+          type: string
+          nullable: true
+        coordinates:
+          "$ref": "#/components/schemas/Coordinates"
+        radius:
+          type: integer
+          format: int32
+      additionalProperties: false
