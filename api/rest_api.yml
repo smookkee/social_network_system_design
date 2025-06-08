@@ -4,19 +4,19 @@ info:
   title: My API
   version: v1
 paths:
-  "/api/v1/{publicationId}/comments/add":
+  "/api/v1/{publicationId}/comments":
     post:
       tags:
-        - Comment
+      - Comment
       summary: Добавление комментария
       parameters:
-        - name: publicationId
-          in: path
-          description: Id публикации
-          required: true
-          style: simple
-          schema:
-            type: string
+      - name: publicationId
+        in: path
+        description: Id поста
+        required: true
+        style: simple
+        schema:
+          type: string
       requestBody:
         description: Комментарий
         content:
@@ -35,124 +35,434 @@ paths:
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/Comment"
+                "$ref": "#/components/schemas/CommentActionResult"
             application/json:
               schema:
-                "$ref": "#/components/schemas/Comment"
+                "$ref": "#/components/schemas/CommentActionResult"
             text/json:
               schema:
-                "$ref": "#/components/schemas/Comment"
-  "/api/v1/{publicationId}/comments":
-    post:
+                "$ref": "#/components/schemas/CommentActionResult"
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+    get:
       tags:
-        - Comment
+      - Comment
       summary: Постраничное получение комментариев
       parameters:
-        - name: publicationId
-          in: path
-          description: Id публикации
-          required: true
-          style: simple
-          schema:
-            type: string
-      requestBody:
-        description: Настройки запрашиваемой страницы
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
+      - name: publicationId
+        in: path
+        description: Id поста
+        required: true
+        style: simple
+        schema:
+          type: string
+      - name: pageNumber
+        in: query
+        description: Номер запрашиваемой страницы
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: pageSize
+        in: query
+        description: Количество комментариев на странице
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 10
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/CommentPagingResult"
+                "$ref": "#/components/schemas/CommentPagingResultActionResult"
             application/json:
               schema:
-                "$ref": "#/components/schemas/CommentPagingResult"
+                "$ref": "#/components/schemas/CommentPagingResultActionResult"
             text/json:
               schema:
-                "$ref": "#/components/schemas/CommentPagingResult"
+                "$ref": "#/components/schemas/CommentPagingResultActionResult"
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
   "/api/v1/feed":
-    post:
+    get:
       tags:
-        - Feed
+      - Feed
       summary: Получение общей ленты
-      requestBody:
-        description: Настройки запрашиваемой страницы
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
-  "/api/v1/feed/subscriptions":
-    post:
-      tags:
-        - Feed
-      summary: Получение ленты подписок
-      requestBody:
-        description: Настройки запрашиваемой страницы
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/PageInfo"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
-  "/api/v1/images/{publicationId}/image":
-    post:
-      tags:
-        - File
-      summary: Загрузить изображение в форму редактирования публикации
       parameters:
-        - name: publicationId
-          in: path
-          description: Id публикации
-          required: true
-          style: simple
-          schema:
-            type: string
+      - name: pageNumber
+        in: query
+        description: Номер запрашиваемой страницы
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: pageSize
+        in: query
+        description: Количество комментариев на странице
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+  "/api/v1/feed/subscriptions":
+    get:
+      tags:
+      - Feed
+      summary: Получение подписок
+      parameters:
+      - name: pageNumber
+        in: query
+        description: Номер запрашиваемой страницы
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: pageSize
+        in: query
+        description: Количество комментариев на странице
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+  "/api/v1/feed/search":
+    get:
+      tags:
+      - Feed
+      summary: Поиск поста
+      parameters:
+      - name: searchText
+        in: query
+        description: ''
+        style: form
+        schema:
+          type: string
+      - name: radius
+        in: query
+        description: ''
+        style: form
+        schema:
+          type: string
+      - name: latitude
+        in: query
+        description: ''
+        style: form
+        schema:
+          type: number
+          format: double
+      - name: longitude
+        in: query
+        description: ''
+        style: form
+        schema:
+          type: number
+          format: double
+      - name: pageNumber
+        in: query
+        description: ''
+        style: form
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        description: ''
+        style: form
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+  "/api/v1/images/{publicationId}":
+    post:
+      tags:
+      - File
+      summary: Загрузить изображение в форму редактирования поста
+      parameters:
+      - name: publicationId
+        in: path
+        description: Id поста
+        required: true
+        style: simple
+        schema:
+          type: string
       requestBody:
         description: Изображение в виде массива байт
         content:
@@ -174,78 +484,68 @@ paths:
           content:
             text/plain:
               schema:
-                type: string
+                "$ref": "#/components/schemas/StringActionResult"
             application/json:
               schema:
-                type: string
+                "$ref": "#/components/schemas/StringActionResult"
             text/json:
               schema:
-                type: string
-  "/api/v1/images/{publicationId}":
-    get:
-      tags:
-        - File
-      summary: Получить изображения публикации
-      parameters:
-        - name: publicationId
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
+                "$ref": "#/components/schemas/StringActionResult"
+        '400':
+          description: Bad Request
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/FeedFile"
+                "$ref": "#/components/schemas/ApiError"
             application/json:
               schema:
-                "$ref": "#/components/schemas/FeedFile"
+                "$ref": "#/components/schemas/ApiError"
             text/json:
               schema:
-                "$ref": "#/components/schemas/FeedFile"
-  "/api/v1/images":
-    get:
-      tags:
-        - File
-      summary: Получить изображения публикаций для ленты
-      parameters:
-        - name: publicationIds
-          in: query
-          description: ''
-          style: form
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: Success
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
           content:
             text/plain:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FeedFile"
+                "$ref": "#/components/schemas/ApiError"
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FeedFile"
+                "$ref": "#/components/schemas/ApiError"
             text/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FeedFile"
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
   "/api/v1/publication":
     post:
       tags:
-        - Publication
-      summary: Добавить публикацию
+      - Publication
+      summary: Добавить пост
       requestBody:
-        description: Публикация
+        description: Пост
         content:
           application/json:
             schema:
@@ -262,72 +562,157 @@ paths:
           content:
             text/plain:
               schema:
-                type: string
-                format: uri
+                "$ref": "#/components/schemas/UriActionResult"
             application/json:
               schema:
-                type: string
-                format: uri
+                "$ref": "#/components/schemas/UriActionResult"
             text/json:
               schema:
-                type: string
-                format: uri
+                "$ref": "#/components/schemas/UriActionResult"
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
   "/api/v1/publication/{publicationId}":
     get:
       tags:
-        - Publication
-      summary: Получить публикацию по Id
+      - Publication
+      summary: Получить пост по Id
       parameters:
-        - name: publicationId
-          in: path
-          description: Id публикации
-          required: true
-          style: simple
-          schema:
-            type: string
+      - name: publicationId
+        in: path
+        description: Id поста
+        required: true
+        style: simple
+        schema:
+          type: string
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/Publication"
+                "$ref": "#/components/schemas/PublicationActionResult"
             application/json:
               schema:
-                "$ref": "#/components/schemas/Publication"
+                "$ref": "#/components/schemas/PublicationActionResult"
             text/json:
               schema:
-                "$ref": "#/components/schemas/Publication"
-  "/api/v1/search/publications":
-    post:
-      tags:
-        - PublicationSearch
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SearchOptions"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/SearchOptions"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/SearchOptions"
-      responses:
-        '200':
-          description: Success
+                "$ref": "#/components/schemas/PublicationActionResult"
+        '400':
+          description: Bad Request
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
+                "$ref": "#/components/schemas/ApiError"
             application/json:
               schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
+                "$ref": "#/components/schemas/ApiError"
             text/json:
               schema:
-                "$ref": "#/components/schemas/PublicationPagingResult"
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
 components:
   schemas:
+    ActionResult:
+      type: object
+      additionalProperties: false
+    ApiError:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        errorCode:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+      additionalProperties: false
+      description: Объект с описанием ошибки
     Comment:
       type: object
       properties:
@@ -344,6 +729,14 @@ components:
         date:
           type: string
           format: date-time
+      additionalProperties: false
+    CommentActionResult:
+      type: object
+      properties:
+        result:
+          "$ref": "#/components/schemas/ActionResult"
+        value:
+          "$ref": "#/components/schemas/Comment"
       additionalProperties: false
     CommentPagingResult:
       type: object
@@ -366,6 +759,14 @@ components:
             "$ref": "#/components/schemas/Comment"
           nullable: true
       additionalProperties: false
+    CommentPagingResultActionResult:
+      type: object
+      properties:
+        result:
+          "$ref": "#/components/schemas/ActionResult"
+        value:
+          "$ref": "#/components/schemas/CommentPagingResult"
+      additionalProperties: false
     Coordinates:
       type: object
       properties:
@@ -375,31 +776,6 @@ components:
         longitude:
           type: number
           format: double
-      additionalProperties: false
-    FeedFile:
-      type: object
-      properties:
-        publicationId:
-          type: string
-          nullable: true
-        files:
-          type: array
-          items:
-            type: string
-            format: binary
-          nullable: true
-      additionalProperties: false
-    PageInfo:
-      type: object
-      properties:
-        pageNumber:
-          type: integer
-          format: int32
-          nullable: true
-        pageSize:
-          type: integer
-          format: int32
-          nullable: true
       additionalProperties: false
     Publication:
       type: object
@@ -424,6 +800,14 @@ components:
         coordinates:
           "$ref": "#/components/schemas/Coordinates"
       additionalProperties: false
+    PublicationActionResult:
+      type: object
+      properties:
+        result:
+          "$ref": "#/components/schemas/ActionResult"
+        value:
+          "$ref": "#/components/schemas/Publication"
+      additionalProperties: false
     PublicationPagingResult:
       type: object
       properties:
@@ -445,17 +829,30 @@ components:
             "$ref": "#/components/schemas/Publication"
           nullable: true
       additionalProperties: false
-    SearchOptions:
+    PublicationPagingResultActionResult:
       type: object
       properties:
-        pageInfo:
-          "$ref": "#/components/schemas/PageInfo"
-        searchText:
+        result:
+          "$ref": "#/components/schemas/ActionResult"
+        value:
+          "$ref": "#/components/schemas/PublicationPagingResult"
+      additionalProperties: false
+    StringActionResult:
+      type: object
+      properties:
+        result:
+          "$ref": "#/components/schemas/ActionResult"
+        value:
           type: string
           nullable: true
-        coordinates:
-          "$ref": "#/components/schemas/Coordinates"
-        radius:
-          type: integer
-          format: int32
+      additionalProperties: false
+    UriActionResult:
+      type: object
+      properties:
+        result:
+          "$ref": "#/components/schemas/ActionResult"
+        value:
+          type: string
+          format: uri
+          nullable: true
       additionalProperties: false
