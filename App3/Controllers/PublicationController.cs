@@ -1,18 +1,24 @@
+using App3.Contract;
+using App3.Dto;
 using Microsoft.AspNetCore.Mvc;
-using TravelApp1.Dto;
 
-namespace TravelApp1.Controllers;
+namespace App3.Controllers;
 
 [Route("api/v1/publication")]
 [ApiController]
 public class PublicationController: ControllerBase
 {
     /// <summary>
-    /// Добавить публикацию
+    /// Добавить пост
     /// </summary>
-    /// <param name="publication">Публикация</param>
+    /// <param name="publication">Пост</param>
     /// <returns></returns>
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult<Uri>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiError))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiError))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiError))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiError))]
     public ActionResult<Uri> AddPublication(Publication publication)
     {
         var uri = new Uri($"http://localhost:5000/api/publication/{publication.Id}");
@@ -20,11 +26,16 @@ public class PublicationController: ControllerBase
     }
     
     /// <summary>
-    /// Получить публикацию по Id
+    /// Получить пост по Id
     /// </summary>
-    /// <param name="publicationId">Id публикации</param>
+    /// <param name="publicationId">Id поста</param>
     /// <returns></returns>
     [HttpGet("{publicationId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult<Publication>))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiError))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiError))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiError))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiError))]
     public ActionResult<Publication> GetPublication([FromRoute] string publicationId)
     {
         var newPublication = new Publication();

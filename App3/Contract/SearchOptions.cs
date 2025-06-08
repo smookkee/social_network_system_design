@@ -1,6 +1,6 @@
-using TravelApp1.Dto;
+using App3.Dto;
 
-namespace TravelApp1.Contract;
+namespace App3.Contract;
 
 public class SearchOptions
 {

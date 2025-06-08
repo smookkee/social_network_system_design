@@ -1,4 +1,4 @@
-namespace TravelApp1.Dto;
+namespace App3.Dto;
 
 public class FeedFile
 {

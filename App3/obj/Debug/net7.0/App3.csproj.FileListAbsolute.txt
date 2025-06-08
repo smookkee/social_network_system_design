@@ -32,3 +32,5 @@ C:\Users\ADMIN\RiderProjects\social_network_system_design\App3\obj\Debug\net7.0\
 C:\Users\ADMIN\RiderProjects\social_network_system_design\App3\obj\Debug\net7.0\App3.pdb
 C:\Users\ADMIN\RiderProjects\social_network_system_design\App3\obj\Debug\net7.0\App3.genruntimeconfig.cache
 C:\Users\ADMIN\RiderProjects\social_network_system_design\App3\obj\Debug\net7.0\ref\App3.dll
+C:\Users\ADMIN\RiderProjects\social_network_system_design\App3\bin\Debug\net7.0\App3.xml
+C:\Users\ADMIN\RiderProjects\social_network_system_design\App3\obj\Debug\net7.0\App3.xml

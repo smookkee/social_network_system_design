@@ -1,4 +1,4 @@
-namespace TravelApp1.Contract;
+namespace App3.Contract;
 
 public class PagingResult<T>
 {
