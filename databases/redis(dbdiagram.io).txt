@@ -1,0 +1,19 @@
+Table user_subscriptions_feed {
+  key string
+  value string
+  ttl int
+  updatedAt datetime
+}
+
+Table feed {
+  key string
+  value json
+  updatedAt datetime
+  ttl int
+}
+
+Table search_cache {
+  key string
+  value json
+  updatedAt datetime
+  ttl int
