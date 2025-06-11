@@ -8,6 +8,7 @@ public class Publication
     public DateTime PublishDate { get; set; }
     public string[]? FileIds { get; set; }
     public Coordinates? Coordinates { get; set; }
+    public string UserId { get; set; }
 }
 
 public class Coordinates
