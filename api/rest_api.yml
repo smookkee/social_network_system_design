@@ -262,41 +262,47 @@ paths:
             text/json:
               schema:
                 "$ref": "#/components/schemas/ApiError"
-  "/api/v1/feed/subscriptions":
-    get:
+  "/api/v1/images/{publicationId}":
+    post:
       tags:
-      - Feed
-      summary: Получение подписок
+      - File
+      summary: Загрузить изображение в форму редактирования поста
       parameters:
-      - name: pageNumber
-        in: query
-        description: Номер запрашиваемой страницы
-        style: form
+      - name: publicationId
+        in: path
+        description: Id поста
+        required: true
+        style: simple
         schema:
-          type: integer
-          format: int32
-          default: 1
-      - name: pageSize
-        in: query
-        description: Количество комментариев на странице
-        style: form
-        schema:
-          type: integer
-          format: int32
-          default: 10
+          type: string
+      requestBody:
+        description: Изображение в виде массива байт
+        content:
+          application/json:
+            schema:
+              type: string
+              format: byte
+          text/json:
+            schema:
+              type: string
+              format: byte
+          application/*+json:
+            schema:
+              type: string
+              format: byte
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+                "$ref": "#/components/schemas/StringActionResult"
             application/json:
               schema:
-                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+                "$ref": "#/components/schemas/StringActionResult"
             text/json:
               schema:
-                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
+                "$ref": "#/components/schemas/StringActionResult"
         '400':
           description: Bad Request
           content:
@@ -345,10 +351,162 @@ paths:
             text/json:
               schema:
                 "$ref": "#/components/schemas/ApiError"
-  "/api/v1/feed/search":
+  "/api/v1/publications":
+    post:
+      tags:
+      - Publication
+      summary: Добавить пост
+      requestBody:
+        description: Пост
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Publication"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/Publication"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/Publication"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UriActionResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UriActionResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UriActionResult"
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+  "/api/v1/publications/{publicationId}":
     get:
       tags:
-      - Feed
+      - Publication
+      summary: Получить пост по Id
+      parameters:
+      - name: publicationId
+        in: path
+        description: Id поста
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PublicationActionResult"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationActionResult"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PublicationActionResult"
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ApiError"
+  "/api/v1/publications/search":
+    get:
+      tags:
+      - Publication
       summary: Поиск поста
       parameters:
       - name: searchText
@@ -450,199 +608,41 @@ paths:
             text/json:
               schema:
                 "$ref": "#/components/schemas/ApiError"
-  "/api/v1/images/{publicationId}":
-    post:
-      tags:
-      - File
-      summary: Загрузить изображение в форму редактирования поста
-      parameters:
-      - name: publicationId
-        in: path
-        description: Id поста
-        required: true
-        style: simple
-        schema:
-          type: string
-      requestBody:
-        description: Изображение в виде массива байт
-        content:
-          application/json:
-            schema:
-              type: string
-              format: byte
-          text/json:
-            schema:
-              type: string
-              format: byte
-          application/*+json:
-            schema:
-              type: string
-              format: byte
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/StringActionResult"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StringActionResult"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/StringActionResult"
-        '400':
-          description: Bad Request
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-        '401':
-          description: Unauthorized
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-        '404':
-          description: Not Found
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-        '500':
-          description: Server Error
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-  "/api/v1/publication":
-    post:
-      tags:
-      - Publication
-      summary: Добавить пост
-      requestBody:
-        description: Пост
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/Publication"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/Publication"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/Publication"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/UriActionResult"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/UriActionResult"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/UriActionResult"
-        '400':
-          description: Bad Request
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-        '401':
-          description: Unauthorized
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-        '404':
-          description: Not Found
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-        '500':
-          description: Server Error
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ApiError"
-  "/api/v1/publication/{publicationId}":
+  "/api/v1/subscriptions":
     get:
       tags:
-      - Publication
-      summary: Получить пост по Id
+      - Subscription
+      summary: Получение подписок
       parameters:
-      - name: publicationId
-        in: path
-        description: Id поста
-        required: true
-        style: simple
+      - name: pageNumber
+        in: query
+        description: Номер запрашиваемой страницы
+        style: form
         schema:
-          type: string
+          type: integer
+          format: int32
+          default: 1
+      - name: pageSize
+        in: query
+        description: Количество комментариев на странице
+        style: form
+        schema:
+          type: integer
+          format: int32
+          default: 10
       responses:
         '200':
           description: Success
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/PublicationActionResult"
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
             application/json:
               schema:
-                "$ref": "#/components/schemas/PublicationActionResult"
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
             text/json:
               schema:
-                "$ref": "#/components/schemas/PublicationActionResult"
+                "$ref": "#/components/schemas/PublicationPagingResultActionResult"
         '400':
           description: Bad Request
           content:
@@ -799,6 +799,9 @@ components:
           nullable: true
         coordinates:
           "$ref": "#/components/schemas/Coordinates"
+        userId:
+          type: string
+          nullable: true
       additionalProperties: false
     PublicationActionResult:
       type: object
