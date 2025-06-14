@@ -33,7 +33,7 @@
         </member>
         <member name="T:App3.Controllers.FeedController">
             <summary>
-            Контроллер пуюбликаций
+            Контроллер публикаций
             </summary>
         </member>
         <member name="M:App3.Controllers.FeedController.GetFeed(System.Int32,System.Int32)">
@@ -42,26 +42,6 @@
             </summary>
             <param name="pageNumber">Номер запрашиваемой страницы</param>
             <param name="pageSize">Количество комментариев на странице</param>
-            <returns></returns>
-        </member>
-        <member name="M:App3.Controllers.FeedController.GetUserFeed(System.Int32,System.Int32)">
-            <summary>
-            Получение подписок
-            </summary>
-            <param name="pageNumber">Номер запрашиваемой страницы</param>
-            <param name="pageSize">Количество комментариев на странице</param>
-            <returns></returns>
-        </member>
-        <member name="M:App3.Controllers.FeedController.GetFeed(System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double},System.String,System.String)">
-            <summary>
-            Поиск поста
-            </summary>
-            <param name="searchText"></param>
-            <param name="radius"></param>
-            <param name="latitude"></param>
-            <param name="longitude"></param>
-            <param name="pageNumber"></param>
-            <param name="pageSize"></param>
             <returns></returns>
         </member>
         <member name="T:App3.Controllers.FileController">
@@ -89,6 +69,31 @@
             Получить пост по Id
             </summary>
             <param name="publicationId">Id поста</param>
+            <returns></returns>
+        </member>
+        <member name="M:App3.Controllers.PublicationController.GetFeed(System.String,System.String,System.Nullable{System.Double},System.Nullable{System.Double},System.String,System.String)">
+            <summary>
+            Поиск поста
+            </summary>
+            <param name="searchText"></param>
+            <param name="radius"></param>
+            <param name="latitude"></param>
+            <param name="longitude"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:App3.Controllers.SubscriptionController">
+            <summary>
+            Контроллер подписок
+            </summary>
+        </member>
+        <member name="M:App3.Controllers.SubscriptionController.GetUserFeed(System.Int32,System.Int32)">
+            <summary>
+            Получение подписок
+            </summary>
+            <param name="pageNumber">Номер запрашиваемой страницы</param>
+            <param name="pageSize">Количество комментариев на странице</param>
             <returns></returns>
         </member>
         <member name="P:App3.Dto.Comment.Id">
