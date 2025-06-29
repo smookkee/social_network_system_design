@@ -1,3 +1,9 @@
+// Репликация: RF3, master-slave
+//
+// Шардирование: GeoHash, внутри шарда по временным диапазонам
+// Рефреш раз в минуту
+
+
 Table posts_index {
   _id string [pk]
   title string

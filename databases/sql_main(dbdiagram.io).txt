@@ -1,5 +1,7 @@
-// Use DBML to define your database structure
-// Docs: https://dbml.dbdiagram.io/docs
+// Репликация: RF3, master-slave
+//
+// Шардирование: по GeoHash с созданием шардов на каждую географическую зону => обеспечивает быстрый поиск публикаций по заданной стране или в радиусе от геометки
+// Внутри гео шарда применяем хэш-шардирование по UserId
 
 Table follows {
   following_user_id integer [not null]
