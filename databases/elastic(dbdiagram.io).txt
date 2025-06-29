@@ -1,0 +1,9 @@
+Table posts_index {
+  _id string [pk]
+  title string
+  description string
+  latitude string
+  longtitude string
+  createdAt datetime
+  likes int
+}

@@ -1,0 +1,15 @@
+CREATE TABLE s3_images (
+    id UUID PRIMARY KEY,
+    bucket_name VARCHAR(255) NOT NULL,
+    object_key VARCHAR(1024) NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    content_type VARCHAR(100),
+    file_size BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    metadata JSONB,
+    is_public BOOLEAN DEFAULT FALSE
+);
+
+CREATE INDEX idx_s3_images_object_key ON s3_images (object_key);
+CREATE INDEX idx_s3_images_bucket_name ON s3_images (bucket_name);

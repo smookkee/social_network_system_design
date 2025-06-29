@@ -1,0 +1,63 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table follows {
+  following_user_id integer [not null]
+  followed_user_id integer [not null]
+  created_at timestamp
+}
+
+Table users {
+  id integer [primary key]
+  username varchar
+  email varchar
+  created_at timestamp
+}
+
+Table publications {
+  id integer [primary key]
+  title varchar
+  Description text
+  user_id integer [not null]
+  status varchar
+  publish_date timestamp
+  latitude double
+  longitude double
+}
+
+Table files {
+  id integer [primary key]
+  publication_id int [not null]
+  s3_url varchar
+}
+
+Table comments {
+  id integer [primary key]
+  publication_id int [not null]
+  text varchar
+  user_id integer [not null]
+}
+
+Table likes
+{
+  user_id integer [primary key]
+  publication_id integer [primary key]
+  date timestamp
+}
+
+
+Ref: posts.id < likes.publication_id
+
+Ref: users.id < likes.user_id
+
+Ref: posts.id < files.publication_id
+
+Ref: users.id < comments.user_id
+
+Ref: posts.id  < comments.publication_id
+
+Ref user_posts: posts.user_id > users.id
+
+Ref: users.id < follows.following_user_id
+
+Ref: users.id < follows.followed_user_id
