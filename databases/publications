@@ -14,3 +14,11 @@ Table publications {
   latitude double
   longitude double
 }
+
+Table files {
+  id integer [primary key]
+  publication_id int [not null]
+  s3_url varchar
+}
+
+Ref: publications.id < files.publication_id
