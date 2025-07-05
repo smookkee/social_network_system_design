@@ -1,0 +1,10 @@
+Table publications {
+  id integer [primary key]
+  title varchar
+  Description text
+  user_id integer [not null]
+  status varchar
+  publish_date timestamp
+  latitude double
+  longitude double
+}
