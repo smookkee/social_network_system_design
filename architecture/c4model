@@ -38,15 +38,13 @@ System_Boundary(elasticSystem, "Search system") {
 
 System_Boundary(likesSystem, "likes system") {
     Container(likesService, "likes service", "")
-    ContainerDb(likesDb, "SQL")
-    
-    Rel(likesService, likesDb, "")
 }
 
 
 ContainerQueue(publicationQueue, "Publication queue", "Rabbit", "Message queue")
 
 Rel(publicationSystem, publicationQueue, "Publish new post to queue")
+Rel(likesSystem, publicationQueue, "Publish batches with likes updates")
 Rel(feedSystem, publicationQueue, "Consumes publications to feed")
 
 Rel(apiGateway, likesSystem, "Route")
