@@ -6,9 +6,6 @@ CREATE TABLE s3_images (
     content_type VARCHAR(100),
     file_size BIGINT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    metadata JSONB,
-    is_public BOOLEAN DEFAULT FALSE
 );
 
 CREATE INDEX idx_s3_images_object_key ON s3_images (object_key);
