@@ -1,6 +1,6 @@
 // Репликация: RF3, master-slave
 //
-// Шардирование: по UserId 
+// Шардирование: по users.Id
 
 Table follows {
   following_user_id integer [not null]
