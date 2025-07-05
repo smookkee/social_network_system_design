@@ -1,0 +1,24 @@
+// Репликация: RF3, master-slave
+//
+// Шардирование: по GeoHash с созданием шардов на каждую географическую зону => обеспечивает быстрый поиск публикаций по заданной стране или в радиусе от геометки
+// Внутри гео шарда применяем хэш-шардирование по UserId
+
+
+Table publications {
+  id integer [primary key]
+  title varchar
+  Description text
+  user_id integer [not null]
+  status varchar
+  publish_date timestamp
+  latitude double
+  longitude double
+}
+
+Table files {
+  id integer [primary key]
+  publication_id int [not null]
+  s3_url varchar
+}
+
+Ref: publications.id < files.publication_id
