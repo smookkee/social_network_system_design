@@ -1,0 +1,8 @@
+// Репликация: RF3, master-slave
+// Шардирование по following_user_id
+
+Table follows {
+  following_user_id integer [not null]
+  followed_user_id integer [not null]
+  created_at timestamp
+}
