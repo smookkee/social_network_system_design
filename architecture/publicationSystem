@@ -1,24 +1,22 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-Person(user, "User")
-Container(apiGateway, "API Gateway", "Routes requests to microservices + auth")
+Person(user, "User", "Platform user")
+Container(apiGateway, "API Gateway", "Request router + auth")
 
-Rel(user, apiGateway, "Sends requests")
+Rel(user, apiGateway, "Makes requests", "HTTP/HTTPS")
 
-System_Boundary(publicationSystem, "publication system") {
-    Container(publicationService, "publication Service", "")
-    
+System_Boundary(publicationSystem, "Publication System") {
+    Container(publicationService, "Publication Service", "Handles post creation and management")
 }
 
-ContainerDb(publicationDB, "SQL")
-    
-ContainerQueue(publicationQueue, "Publication queue", "Rabbit", "Message queue")
-ContainerQueue(filesSystem, "Files System", "Storages images")
+ContainerDb(postDatabase, "Post Database", "SQL", "Stores post metadata and content")
+ContainerQueue(newPostQueue, "New Post Queue", "RabbitMQ", "Distributes new post notifications")
+Container(fileStorage, "File Storage", "S3-compatible", "Stores post images and media")
 
-Rel(publicationService, publicationDB, "")
-Rel(publicationSystem, publicationQueue, "Publish new post to queue for filling feed")
-Rel(publicationSystem, filesSystem, "Uplaod images")
+Rel(publicationService, postDatabase, "Stores/retrieves post data", "JDBC/SQL")
+Rel(publicationService, newPostQueue, "Publishes new post events", "AMQP")
+Rel(publicationService, fileStorage, "Uploads/downloads media files", "S3 API")
 
-Rel(apiGateway, publicationSystem, "Route")
+Rel(apiGateway, publicationService, "Routes publication requests", "REST/HTTP")
 @enduml
