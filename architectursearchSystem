@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User")
+Container(apiGateway, "API Gateway", "Routes requests to microservices + auth")
+
+Rel(user, apiGateway, "Sends requests")
+
+System_Boundary(elasticSystem, "Search system") {
+    Container(elasticService, "search service", "")
+    ContainerDb(elasticDb, "elasticDb")
+    Rel(elasticService, elasticDb, "")
+}
+
+ContainerDb(elasticSqlDb, "SQL")
+Rel(elasticService, elasticSqlDb, "")
+Rel(apiGateway, elasticService, "Route")
+@enduml
