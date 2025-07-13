@@ -1,0 +1,19 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "System user")
+Container(apiGateway, "API Gateway", "Spring Cloud Gateway", "Routes requests, handles authentication")
+
+Rel(user, apiGateway, "Makes HTTP requests [HTTPS]")
+
+System_Boundary(fileStorageSystem, "File Storage System") {
+    Container(fileService, "File Service", "Spring Boot", "Manages file uploads/downloads and storage tiering")
+    ContainerDb(hotStorage, "Hot Storage", "S3 SSD", "Stores frequently accessed files (<1 month old)")
+    ContainerDb(coldStorage, "Cold Storage", "S3 Glacier", "Archives infrequently accessed files (>1 month old)")
+    
+    Rel(fileService, hotStorage, "Stores/retrieves recent files", "S3 API")
+    Rel(fileService, coldStorage, "Archives/moves old files", "S3 API")
+}
+
+Rel(apiGateway, fileService, "Routes file operations", "REST/HTTP")
+@enduml

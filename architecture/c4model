@@ -1,0 +1,19 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User")
+
+ContainerQueue(publicationSystem, "Publication System", "Handles post creation and image uploads")
+ContainerQueue(feedSystem, "Feed System", "Generates and serves user feeds")
+ContainerQueue(filesSystem, "File Storage System", "Stores and serves media files")
+ContainerQueue(elasticSystem, "Search System", "Indexes and searches content")
+ContainerQueue(likesSystem, "Like Service", "Manages post likes and reactions")
+
+Rel(user, publicationSystem, "publishes new posts and uploads images")
+Rel(user, feedSystem, "views general and personalized feeds")
+Rel(user, filesSystem, "accesses images for posts")
+Rel(user, elasticSystem, "searches for posts and content")
+Rel(user, likesSystem, "likes/unlikes posts and sees likes")
+
+
+@enduml

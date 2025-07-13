@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "System user")
+Container(apiGateway, "API Gateway", "Routes requests, handles authentication")
+
+Rel(user, apiGateway, "Sends HTTP requests", "HTTPS")
+
+System_Boundary(likeSystem, "Like Management System") {
+    Container(likeService, "Like Service", "Processes like/unlike actions")
+}
+
+ContainerQueue(likeEvents, "Like Events Queue", "Message queue for like updates")
+
+Rel(apiGateway, likeService, "Routes like operations", "HTTP")
+Rel(likeService, likeEvents, "Publishes like updates", "Async messages")
+
+@enduml

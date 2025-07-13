@@ -1,0 +1,21 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "System user")
+Container(apiGateway, "API Gateway", "Spring Cloud Gateway", "Request routing, authentication and authorization")
+
+Rel(user, apiGateway, "Sends HTTP requests [HTTPS]")
+
+System_Boundary(feedSystem, "Feed System") {
+    Container(feedService, "Feed Service", "Spring Boot", "Generates feed (main/personalized)")
+    ContainerDb(feedCache, "Feed Cache", "Redis", "Caches pre-generated user feeds")
+    Rel(feedService, feedCache, "Read/write", "Redis Protocol")
+}
+
+ContainerQueue(publicationEvents, "Publication Events", "RabbitMQ", "New publication event bus")
+ContainerDb(postDatabase, "Post Database", "PostgreSQL", "Primary post storage (read replica)")
+
+Rel(feedService, postDatabase, "Fetches new publications", "JDBC")
+Rel(apiGateway, feedService, "Requests user's feed", "REST/HTTP")
+Rel(feedService, publicationEvents, "Subscribes to new publications", "AMQP")
+@enduml

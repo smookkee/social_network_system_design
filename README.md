@@ -68,6 +68,67 @@
 11. Максимальное количество символов в комментарии: **500**
 
 ---
+# Дизайн системы в C4
+
+## Уровень 1
+
+<p align="center">
+  <strong>Диаграмма уровня 1</strong>
+</p>
+
+<p align="center">
+  <img width="1114" height="273" alt="image" src="https://github.com/user-attachments/assets/36f2accc-cd3c-4264-99e6-29bcd8a06524" />
+</p>
+
+## Уровень 2. Система публикаций
+
+<p align="center">
+  <strong>Диаграмма системы публикаций</strong>
+</p>
+
+<p align="center">
+  <img width="639" height="781" alt="image" src="https://github.com/user-attachments/assets/ef0103e1-ca75-48c1-bbd5-0038622c44bd" />
+</p>
+
+## Уровень 2. Система лент
+
+<p align="center">
+  <strong>Диаграмма системы лент</strong>
+</p>
+
+<p align="center">
+  <img width="734" height="870" alt="image" src="https://github.com/user-attachments/assets/705836cc-1c96-42f2-9a44-7d6a93984d0c" />
+</p>
+
+## Уровень 2. Система файлов
+
+<p align="center">
+  <strong>Диаграмма системы файлов</strong>
+</p>
+
+<p align="center">
+  <img width="487" height="887" alt="image" src="https://github.com/user-attachments/assets/f8d31cfb-683c-4898-91af-c18655904fd8" />
+</p>
+
+## Уровень 2. Система лайков
+
+<p align="center">
+  <strong>Диаграмма системы лайков</strong>
+</p>
+
+<p align="center">
+  <img width="282" height="717" alt="image" src="https://github.com/user-attachments/assets/8a7ebc32-2771-4a47-b4a2-fd44d86b8ff0" />
+</p>
+
+## Уровень 2. Поисковая система
+
+<p align="center">
+  <strong>Диаграмма поисковой системы</strong>
+</p>
+
+<p align="center">
+  <img width="436" height="793" alt="image" src="https://github.com/user-attachments/assets/3fff0b7e-1d3a-47fd-ab65-bfb4f29e58ed" />
+</p>
 
 ## Оценка нагрузки
 
