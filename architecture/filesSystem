@@ -1,0 +1,20 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User")
+Container(apiGateway, "API Gateway", "Routes requests to microservices + auth")
+
+Rel(user, apiGateway, "Sends requests")
+
+System_Boundary(s3system, "files system") {
+    Container(s3service, "files service", "stores images for publications")
+    ContainerDb(s3dbSSD, "S3 SSD")
+    ContainerDb(coldHDD, "ColdHDD")
+    Rel(s3service, s3dbSSD, "stores data for last one month")
+    Rel(s3service, coldHDD, "stored data older than one month")
+}
+
+Rel(apiGateway, s3service, "Route")
+
+
+@enduml
