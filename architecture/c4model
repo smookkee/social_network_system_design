@@ -2,54 +2,18 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 Person(user, "User")
-Container(apiGateway, "API Gateway", "Routes requests to microservices + auth")
 
-Rel(user, apiGateway, "Sends requests")
+ContainerQueue(publicationSystem, "Publication System", "Handles post creation and image uploads")
+ContainerQueue(feedSystem, "Feed System", "Generates and serves user feeds")
+ContainerQueue(filesSystem, "File Storage System", "Stores and serves media files")
+ContainerQueue(elasticSystem, "Search System", "Indexes and searches content")
+ContainerQueue(likesSystem, "Like Service", "Manages post likes and reactions")
 
-System_Boundary(publicationSystem, "publication system") {
-    Container(publicationService, "publication Service", "")
-    ContainerDb(publicationDB, "SQL")
-    Rel(publicationService, publicationDB, "")
-}
-
-System_Boundary(feedSystem, "feed system") {
-    Container(feedService, "feed Service", "")
-    ContainerDb(feedDB, "Redis","", "Stores feed of last publications")
-    ContainerDb(feedPublicationDb, "SQL")
-    Rel(feedService, feedDB, "")
-    Rel(feedService, feedPublicationDb, "")
-}
-
-System_Boundary(s3system, "files system") {
-    Container(s3service, "files service", "")
-    ContainerDb(s3dbSSD, "S3 SSD")
-    ContainerDb(coldHDD, "ColdHDD")
-    Rel(s3service, s3dbSSD, "")
-    Rel(s3service, coldHDD, "")
-}
-
-System_Boundary(elasticSystem, "Search system") {
-    Container(elasticService, "search service", "")
-    ContainerDb(elasticDb, "elasticDb")
-    ContainerDb(elasticSqlDb, "SQL")
-    Rel(elasticService, elasticDb, "")
-    Rel(elasticService, elasticSqlDb, "")
-}
-
-System_Boundary(likesSystem, "likes system") {
-    Container(likesService, "likes service", "")
-}
+Rel(user, publicationSystem, "publishes new posts and uploads images")
+Rel(user, feedSystem, "views general and personalized feeds")
+Rel(user, filesSystem, "accesses images for posts")
+Rel(user, elasticSystem, "searches for posts and content")
+Rel(user, likesSystem, "likes/unlikes posts and sees likes")
 
 
-ContainerQueue(publicationQueue, "Publication queue", "Rabbit", "Message queue")
-
-Rel(publicationSystem, publicationQueue, "Publish new post to queue")
-Rel(likesSystem, publicationQueue, "Publish batches with likes updates")
-Rel(feedSystem, publicationQueue, "Consumes publications to feed")
-
-Rel(apiGateway, likesSystem, "Route")
-Rel(publicationSystem, s3system, "Upload images")
-Rel(apiGateway, elasticSystem, "Route")
-Rel(apiGateway, s3system, "Route")
-Rel(apiGateway, feedSystem, "Route")
 @enduml
