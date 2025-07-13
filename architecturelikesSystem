@@ -1,0 +1,17 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User")
+Container(apiGateway, "API Gateway", "Routes requests to microservices + auth")
+
+Rel(user, apiGateway, "Sends requests")
+
+System_Boundary(likesSystem, "likes system") {
+    Container(likesService, "likes service", "")
+}
+
+ContainerQueue(publicationQueue, "Publication queue", "Rabbit", "Message queue")
+
+Rel(apiGateway, likesService, "Route")
+Rel(likesService, publicationQueue, "Publish batches with likes updates")
+@enduml
