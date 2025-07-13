@@ -1,0 +1,23 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User")
+Container(apiGateway, "API Gateway", "Routes requests to microservices + auth")
+
+Rel(user, apiGateway, "Sends requests")
+
+System_Boundary(feedSystem, "feed system") {
+    Container(feedService, "feed Service", "")
+    ContainerDb(feedDB, "Redis","", "Stores feed of last publications")
+    Rel(feedService, feedDB, "")
+}
+
+
+ContainerQueue(publicationQueue, "Publication queue", "Rabbit", "Message queue")
+ContainerQueue(sqlDb, "SQL", "SQL", "slave")
+
+
+Rel(feedService, sqlDb, "Read last publications to fill feed on start of app")
+Rel(apiGateway, feedService, "Get general and personal feed")
+Rel(feedService, publicationQueue, "Consumes publications to feed")
+@enduml
