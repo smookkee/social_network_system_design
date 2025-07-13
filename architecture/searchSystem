@@ -1,18 +1,19 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-Person(user, "User")
-Container(apiGateway, "API Gateway", "Routes requests to microservices + auth")
+Person(user, "User", "Platform user")
+Container(apiGateway, "API Gateway", "Request router + auth")
 
-Rel(user, apiGateway, "Sends requests")
+Rel(user, apiGateway, "Sends search requests", "HTTP/HTTPS")
 
-System_Boundary(elasticSystem, "Search system") {
-    Container(elasticService, "search service", "")
-    ContainerDb(elasticDb, "elasticDb")
-    Rel(elasticService, elasticDb, "")
+System_Boundary(searchSystem, "Search System") {
+    Container(searchService, "Search Service", "Processes search queries, aggregates results")
+    ContainerDb(searchIndex, "Search Index", "Elasticsearch", "Full-text search index")
+    Rel(searchService, searchIndex, "Queries search index", "Elasticsearch API")
 }
 
-ContainerDb(elasticSqlDb, "SQL")
-Rel(elasticService, elasticSqlDb, "")
-Rel(apiGateway, elasticService, "Route")
+ContainerDb(mainDatabase, "Main Database", "PostgreSQL", "Source of truth for searchable data")
+Rel(searchService, mainDatabase, "Synchronizes search index", "JDBC")
+Rel(apiGateway, searchService, "Routes search requests", "REST/HTTP")
+
 @enduml
